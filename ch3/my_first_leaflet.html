@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        #map{
+        height: 600px;
+        }
+    </style>
+    <head>
+        <meta charset="utf-8">
+        <title> Online GIS : Leaflet </title>
+        <link rel="stylesheet" href="leaflet.css" />
+        <script src="leaflet.js"></script>
+        
+        <!-- Library สำหรับแสดงตำแหน่งเมาส์-->
+        <link rel="stylesheet" href="L.Control.MousePosition.css" />
+        <script src="L.Control.MousePosition.js"></script>
+
+         <!-- เพิ่ม Leaflet AJAX สำหรับอ่านไฟล์ GeoJSON-->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    </head>
+    <body>
+        <H2>How to Create Online Map using Leaflet</H2>
+       
+        <!--คำสั่งเรียกแผนที่จากตัวแปลที่ชื่อ map มาแสดงหน้าเว็บ-->
+        <div id="map" style="height: 690px;  border: 3px solid #AAA;"></div>  
+       
+       <script> //แทรกคำสั่ง JavaScript ไว้ภายใน BODY
+            
+            //var mymap = L.map(map).setView([16.744,100.191],15); //ตั้งค่าจุดกึ่งกลางแผนที่ไปที่ ม.นเรศวร
+            var mymap= L.map('map').setView([10.814,100.569], 5); //ตั้งค่าจุดกึ่งกลางแผนที่ไปที่ ประเทศไทย
+            
+            //คำสั่งเรียกค่าพิกัดมาแสดงบนแผนที่
+            L.control.mousePosition().addTo(mymap);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mymap);
+            
+           
+            // จุดแสดงตำแหน่ง marker
+            var marker=L.marker([16.745, 100.194]).bindPopup("มหาวิทยาลัยนเรศวร");
+            
+            // แสดงรัศมี circle
+            var circle=L.circle([16.745, 100.194],radius=500);
+
+            //คำสั่งเพิ่ม เส้น
+            var polyline = L.polyline([
+                [16.742, 100.180],
+                [16.735, 100.189],
+                [16.735, 100.190],
+                [16.739, 100.189]
+            ]);
+            
+            //คำสั่งเพิ่ม รูปพื้นที่ปิด
+            var polygon = L.polygon([
+                [16.753, 100.179],
+                [16.743, 100.179],
+                [16.743, 100.190],
+                [16.753, 100.190]
+            ]);
+
+            //การเรียกแผนที่พื้นมาแสดงและ สร้าง Layer group
+            var google_map=L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}',{
+                maxZoom:18,
+                subdomains:['mt0','mt1','mt3','mt4']
+            });
+            var openstreetmap=L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+                maxZoom:18
+            });
+            var EsriWorldStreetMap=L.tileLayer
+            ('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:18
+            });
+            var EsriWorldImagery=L.tileLayer
+            ('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:18
+            }).addTo(mymap);
+
+            
+
+
+
+        function popUp(f,l){
+            var out = [];
+                if (f.properties){
+                for(key in f.properties){
+                    out.push(key+": "+f.properties[key]);
+                }
+                l.bindPopup(out.join("<br />"));
+            }
+        }
+
+           //คำสั่งเรียกไฟล์ GeoJSON มาแสดง
+            var jsonTest = new L.GeoJSON.AJAX(["data/thailand_province.geojson"],{onEachFeature:popUp});
+
+
+            var province_SQL = new L.GeoJSON();
+
+                function geojson() {
+ 
+                var url = 'json_sql.php';
+                  
+                $.ajax({
+                    url: url,
+                    'async':false,
+                    'success':function(data) {
+	                resp = data;
+	                pointjson = JSON.parse(data);
+	                console.log(JSON.parse(data));
+	                showmap = L.geoJSON(province_SQL).addTo(mymap);
+                    }
+                });
+                console.log(resp);
+  
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var baseLayers={
+                "Google_map":google_map,
+                "Openstreetmap":openstreetmap,
+                "EsriWorldStreetMap":EsriWorldStreetMap,
+                "EsriWorldImagery":EsriWorldImagery
+            };
+
+            //การประกาศตัวแปร 
+            var overlays={
+                "จุด":marker,
+                "เส้น":polyline,
+                "สี่เหลี่ยม":polygon,
+                "วงกลม":circle,
+                "ขอบเขตจังหวัด":jsonTest
+               
+            };
+
+            L.control.layers(baseLayers,overlays).addTo(mymap);
+
+
+
+
+        </script>
+    </body>
+</html>
+
