@@ -1,0 +1,272 @@
+MAP
+  DEFRESOLUTION 96
+  EXTENT 544629.094652656 1794045.76767962 822618.905347344 1969516.23232038
+  FONTSET "C:\\Program Files (x86)\\MapManager\\templates\\font.list"
+  IMAGETYPE "png24"
+  NAME "Phitsanulok"
+  RESOLUTION 96
+  SHAPEPATH "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP"
+  SIZE 1148 725
+  STATUS ON
+  SYMBOLSET "C:\\Program Files (x86)\\MapManager\\templates\\symbols.sym"
+  UNITS METERS
+
+  OUTPUTFORMAT
+    NAME "png24"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT FALSE
+  END # OUTPUTFORMAT
+
+  OUTPUTFORMAT
+    NAME "print"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT FALSE
+  END # OUTPUTFORMAT
+
+    PROJECTION
+    "proj=utm"
+    "zone=47"
+    "datum=WGS84"
+    "units=m"
+    "no_defs"
+  END # PROJECTION
+  
+  LEGEND
+    KEYSIZE 20 10
+    KEYSPACING 5 5
+    LABEL
+      SIZE 10
+      OFFSET 0 0
+      SHADOWSIZE 1 1
+    END # LABEL
+    STATUS OFF
+  END # LEGEND
+
+  QUERYMAP
+    SIZE -1 -1
+    STATUS OFF
+    STYLE HILITE
+  END # QUERYMAP
+
+  SCALEBAR
+    INTERVALS 4
+    LABEL
+      SIZE 10
+      OFFSET 0 0
+      SHADOWSIZE 1 1
+    END # LABEL
+    SIZE 200 3
+    STATUS OFF
+    UNITS MILES
+  END # SCALEBAR
+
+   WEB
+    METADATA
+      "distance_units"	"MS_METERS"
+      "mapmanager_version"	"1.1.0.0"
+      "coordsys_name"	"WGS 84 / UTM zone 47N"
+	  'ows_srs'             'EPSG:3857'
+	  "wms_enable_request" "*"    
+      "gml_include_items" "all"
+      "wms_include_items" "all" 
+	  "ows_include_items" "all" 
+	  "ows_enable_request"  "*"
+    END # METADATA
+  END # WEB
+  
+
+  LAYER
+    COMPOSITE
+    END # COMPOSITE
+    CONNECTION "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\PROVINCE.SHP"
+    CONNECTIONTYPE OGR
+    METADATA
+      "coordsys_name"	"WGS 84 / UTM zone 47N"
+    END # METADATA
+    NAME "PROVINCE"
+    PROJECTION
+      "proj=utm"
+      "zone=47"
+      "datum=WGS84"
+      "units=m"
+      "no_defs"
+    END # PROJECTION
+    STATUS ON
+    TEMPLATE "query"
+    TILEITEM "location"
+    TYPE POLYGON
+    UNITS METERS
+    CLASS
+      NAME "Class (0)"
+      STYLE
+        COLOR 128 255 128
+        OUTLINECOLOR 0 0 0
+        SIZE 8
+      END # STYLE
+      TEMPLATE "query.html"
+    END # CLASS
+  END # LAYER
+
+  LAYER
+    COMPOSITE
+    END # COMPOSITE
+    CONNECTION "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\AMPHOE.SHP"
+    CONNECTIONTYPE OGR
+    LABELITEM "AMPHOE_ID"
+    NAME "AMPHOE"
+    STATUS ON
+    TEMPLATE "query"
+    TILEITEM "location"
+    TYPE POLYGON
+    UNITS METERS
+    CLASS
+      NAME "Class (0)"
+      LABEL
+        FONT "arial"
+        SIZE 14
+		OFFSET 0 0
+        PARTIALS TRUE
+        POSITION CC
+        SHADOWSIZE 1 1
+      END # LABEL
+      STYLE
+        COLOR 235 237 146
+        OUTLINECOLOR 128 128 128
+        PATTERN
+         4.00 2.00
+        END # PATTERN
+        SIZE 8
+        SYMBOL "Dash-2"
+      END # STYLE
+      TEMPLATE "query.html"
+    END # CLASS
+  END # LAYER
+
+  LAYER
+    COMPOSITE
+    END # COMPOSITE
+    CONNECTION "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\STREAM.SHP"
+    CONNECTIONTYPE OGR
+    METADATA
+      "coordsys_name"	"WGS 84 / UTM zone 47N"
+    END # METADATA
+    NAME "STREAM"
+    PROJECTION
+      "proj=utm"
+      "zone=47"
+      "datum=WGS84"
+      "units=m"
+      "no_defs"
+    END # PROJECTION
+    STATUS ON
+    TEMPLATE "query"
+    TILEITEM "location"
+    TYPE LINE
+    UNITS METERS
+    CLASS
+      NAME "Class (0)"
+      STYLE
+        COLOR 0 128 255
+        SIZE 8
+      END # STYLE
+      TEMPLATE "query.html"
+    END # CLASS
+  END # LAYER
+
+  LAYER
+    CONNECTION "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\TRANS.SHP"
+    CONNECTIONTYPE OGR
+    NAME "TRANS"
+    STATUS ON
+    TEMPLATE "query.html"
+    TILEITEM "location"
+    TYPE LINE
+    UNITS METERS
+    CLASS
+      NAME "Class (0)"
+      STYLE
+        COLOR 0 0 0
+        SIZE 8
+      END # STYLE
+      TEMPLATE "query.html"
+    END # CLASS
+  END # LAYER
+  
+  LAYER
+    NAME 'tha_amphoe'
+    TYPE LINE
+    DUMP true
+    TEMPLATE fooOnlyForWMSGetFeatureInfo
+  EXTENT 11147794 1878030 11188216 1918348
+    CONNECTIONTYPE postgis
+    CONNECTION "dbname='phitsanulok' host=localhost port=5432 user='postgres' password='postgres'"
+    DATA 'geom FROM tha_amphoe USING UNIQUE gid USING srid=3857'
+    METADATA
+      'ows_title' 'tha_amphoe'
+    END
+    STATUS OFF
+    TRANSPARENCY 100
+PROJECTION
+        "init=epsg:3857" 
+		"wms_enable_request" "*"    
+        "gml_include_items" "all"
+        "wms_include_items" "all" 
+		 "ows_include_items" "all" 
+		
+      "ows_enable_request"  "*"
+  END
+    CLASS
+       NAME 'tha_amphoe' 
+       STYLE
+         WIDTH 0.91 
+         COLOR 107 80 204
+       END
+    END
+  END
+
+END # MAP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+MAP
+  NAME "Drone Image"												              # ชื่อแผนที่
+  EXTENT 11149989 1897155  11150265 1897391							 # ขอบเขตค่าพิกัดของข้อมูลแผนที่ Bounding Box
+  IMAGETYPE "png24"															                     # ประเภทข้อมูล ชนิดรูปภาพ เช่น jpeg, tiff, gif, png
+  SIZE 800 600                                                       # ขนาดกว้าง ยาว ของแผนที่ๆ แสดงบนหน้าจอคอมพิวเตอร์
+  UNITS DD                                                           # หน่วยของพิกัดของแผนที่ (DD = Decimal Degree) หรือ m = meter
+
+  OUTPUTFORMAT                                                       # เปิดแท็ก OUTPUTFORMAT
+    NAME "png24"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT FALSE
+  END # OUTPUTFORMAT                                                # ปิดแท็ก OUTPUTFORMAT
+
+  PROJECTION                                                              
+   "init=epsg:3857"                                                 # ระบุค่าพิกัดของแผนที่เป็น EPSG:3857 
+  END # PROJECTION
+  
+ 
+  LAYER                                                             # เปิดแท็กชั้นข้อมูล
+    DATA "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\uav.tif"        # ที่อยู่ path ของข้อมูลที่ไปเรียกมาแสดง
+    EXTENT 11149989 1897155  11150265 1897391	 					              # ขอบเขตค่าพิกัดของข้อมูลแผนที่ (ตัวอย่างนี้มีข้อมูลเดียว ขอบเขต EXTENT จึงเท่ากับ EXTENT ของ MAP)
+    METADATA
+      "coordsys_name"	"Longitude-Latitude / WGS 84"                   # รายละเอียดของข้อมูล
+    END # METADATA
+    NAME "uav"                                                        # ชื่อชั้นข้อมูล
+    PROJECTION
+      "init=epsg:3857"                                                # ระบบพิกัดของข้อมูล
+    END # PROJECTION
+    TILEITEM "location"
+    TYPE RASTER
+  END # LAYER                                                         # ปิดแท็กชั้นข้อมูล
+
+END # MAP                                                             # ปิดแท็ก MAP
+
+
+

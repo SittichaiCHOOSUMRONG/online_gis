@@ -1,0 +1,55 @@
+MAP
+  DEFRESOLUTION 96
+  EXTENT 10831635 617296 11764076 2336702
+  IMAGETYPE "png24"
+  NAME "Thai Amphoe Database"
+  RESOLUTION 96
+  SIZE 1148 725
+  STATUS ON
+  UNITS METERS
+
+  OUTPUTFORMAT
+    NAME "png24"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT FALSE
+  END # OUTPUTFORMAT
+
+  PROJECTION
+    "init=epsg:3857"
+  END # PROJECTION
+   
+  LAYER
+    NAME 'tha_amphoe'
+    TYPE LINE
+    DUMP true
+    TEMPLATE fooOnlyForWMSGetFeatureInfo
+  EXTENT 11147794 1878030 11188216 1918348
+    CONNECTIONTYPE postgis
+    CONNECTION "dbname='phitsanulok' host=localhost port=5432 user='postgres' password='postgres' "
+    DATA 'geom FROM tha_amphoe USING UNIQUE gid USING srid=3857'
+    METADATA
+      'ows_title' 'tha_amphoe'
+    END
+    STATUS OFF
+    TRANSPARENCY 100
+PROJECTION
+        "init=epsg:3857" 
+	END
+    CLASS
+       NAME 'tha_amphoe' 
+       STYLE
+         WIDTH 0.91 
+         COLOR 107 80 204
+       END
+    END
+  END
+
+END # MAP
+
+
+
+
+

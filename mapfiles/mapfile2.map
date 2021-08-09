@@ -1,0 +1,52 @@
+MAP
+  NAME "Phitsanulok"
+  EXTENT 547578.477516502 1803457.9375 768699.522483498 1962602.0625
+  IMAGETYPE "png24"
+  SIZE 843 607
+  UNITS METERS
+
+  OUTPUTFORMAT
+    NAME "png24"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT FALSE
+  END # OUTPUTFORMAT
+
+   PROJECTION
+   "init=epsg:32647"
+  END # PROJECTION
+ 
+  LAYER
+    NAME "AMPHOE"
+	CONNECTION "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\AMPHOE.SHP"
+    CONNECTIONTYPE OGR
+    TYPE POLYGON
+    UNITS METERS
+    CLASS
+      NAME "Class (0)"
+      STYLE
+        COLOR 0 255 0
+        OUTLINECOLOR 0 0 0
+        SIZE 8
+      END # STYLE
+    END # CLASS
+  END # LAYER
+  ## Copy LAYER ข้างบนมาวางต่อกัน
+  LAYER
+    NAME "STREAM"
+	CONNECTION "C:\\ms4w\\Apache\\htdocs\\online_gis\\SHP\\STREAM.SHP"
+    CONNECTIONTYPE OGR
+    TYPE LINE
+    UNITS METERS
+    CLASS
+      NAME "Class (0)"
+      STYLE
+        COLOR 0 0 255
+        OUTLINECOLOR 0 0 0
+        SIZE 8
+      END # STYLE
+    END # CLASS
+  END # LAYER
+END # MAP
