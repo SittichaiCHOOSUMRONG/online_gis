@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cluster Group: The Online GIS</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css" />
+  	<link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css" />
+</head>
+<body>
+	<a href="https://github.com/bmcbride/PHP-Database-GeoJSON">
+			<img style="position: absolute; top: 0; right: 0; border: 0;" 
+			src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" 
+			alt="Fork me on GitHub">
+	</a>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+	
+	<div id="map" style="width: 100%; height: 800px"></div>
+	
+	<script>
+		
+		var map;
+
+		var OSM = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		});
+
+		// กำหนดสัญลักษณ์เซเว่น
+		var sevenIcon = L.icon({
+			iconUrl: '7.jpg',
+			iconSize: [24, 28],
+			iconAnchor: [12, 28],
+			popupAnchor: [0, -25]
+		});
+		// ชุดคำสั่งสำหรับเรียกชั้นข้อมูลเซเว่น
+		seven = new L.geoJson(null, {
+			pointToLayer: function (feature, latlng) {
+			  return L.marker(latlng, {
+			    icon: sevenIcon,
+			    title: feature.properties.address
+			  });
+			},
+			onEachFeature: function (feature, layer) {
+			  if (feature.properties) {
+			    var content = '<table border="1" style="border-collapse:collapse;" cellpadding="2">' +
+				'<tr>' + '<th>ลำดับ</th>' + '<td>' + feature.properties.id + '</td>' + '</tr>' +
+				'<tr>' + '<th>เวลา</th>' + '<td>' + feature.properties.timestamp + '</td>' + '</tr>' +
+				'<tr>' + '<th>ชื่อร้าน</th>' + '<td>' + feature.properties.name + '</td>' + '</tr>' +
+		        '<tr>' + '<th>ชนิด</th>' + '<td>' + feature.properties.type + '</td>' + '</tr>' +
+		        '<tr>' + '<th>จังหวัด</th>' + '<td>' + feature.properties.prov_namt + '</td>' + '</tr>' +
+				
+		        '<table>';
+			    layer.bindPopup(content);
+			  }
+			}
+		});
+		sevenClusters = new L.MarkerClusterGroup({
+		  spiderfyOnMaxZoom: true,
+		  showCoverageOnHover: false,
+		  zoomToBoundsOnClick: true,
+		  disableClusteringAtZoom: 16
+		});
+		$.getJSON("lm_7.php", function (data) {
+			seven.addData(data);
+			sevenClusters.addLayer(seven);
+		}).complete(function () {
+    	map.fitBounds(seven.getBounds());
+		});
+		
+		// วัด
+		var templeIcon = L.icon({
+			iconUrl: 'temple.png',
+			iconSize: [24, 28],
+			iconAnchor: [12, 28],
+			popupAnchor: [0, -25]
+		});
+		temple = new L.geoJson(null, {
+			pointToLayer: function (feature, latlng) {
+			  return L.marker(latlng, {
+			    icon: templeIcon,
+			    title: feature.properties.address
+			  });
+			},
+			onEachFeature: function (feature, layer) {
+			  if (feature.properties) {
+			    var content = '<table border="1" style="border-collapse:collapse;" cellpadding="2">' +
+		        '<tr>' + '<th>ลำดับ</th>' + '<td>' + feature.properties.id + '</td>' + '</tr>' +
+				'<tr>' + '<th>เวลา</th>' + '<td>' + feature.properties.timestamp + '</td>' + '</tr>' +
+				'<tr>' + '<th>ชื่อวัด</th>' + '<td>' + feature.properties.name + '</td>' + '</tr>' +
+		        '<tr>' + '<th>ชนิด</th>' + '<td>' + feature.properties.type + '</td>' + '</tr>' +
+		        '<tr>' + '<th>จังหวัด</th>' + '<td>' + feature.properties.prov_namt + '</td>' + '</tr>' +
+		     
+		        '<table>';
+			    layer.bindPopup(content);
+			  }
+			}
+		});
+		templeClusters = new L.MarkerClusterGroup({
+		  spiderfyOnMaxZoom: true,
+		  showCoverageOnHover: false,
+		  zoomToBoundsOnClick: true,
+		  disableClusteringAtZoom: 16
+		});
+		$.getJSON("lm_temple.php", function (data) {
+  		temple.addData(data);
+		  templeClusters.addLayer(temple);
+		}).complete(function () {
+    	map.fitBounds(temple.getBounds());
+		});
+
+		// ป.ต.ท.
+		var pttIcon = L.icon({
+			iconUrl: 'ptt.png',
+			iconSize: [24, 28],
+			iconAnchor: [12, 28],
+			popupAnchor: [0, -25]
+		});
+		ptt = new L.geoJson(null, {
+			pointToLayer: function (feature, latlng) {
+			  return L.marker(latlng, {
+			    icon: pttIcon,
+			    title: feature.properties.address
+			  });
+			},
+			onEachFeature: function (feature, layer) {
+			  if (feature.properties) {
+			    var content = '<table border="1" style="border-collapse:collapse;" cellpadding="2">' +
+		        '<tr>' + '<th>ลำดับ</th>' + '<td>' + feature.properties.id + '</td>' + '</tr>' +
+				'<tr>' + '<th>เวลา</th>' + '<td>' + feature.properties.timestamp + '</td>' + '</tr>' +
+				'<tr>' + '<th>ชื่อ</th>' + '<td>' + feature.properties.name + '</td>' + '</tr>' +
+		        '<tr>' + '<th>ชนิด</th>' + '<td>' + feature.properties.type + '</td>' + '</tr>' +
+		        '<tr>' + '<th>จังหวัด</th>' + '<td>' + feature.properties.prov_namt + '</td>' + '</tr>' +
+		     
+		        '<table>';
+			    layer.bindPopup(content);
+			  }
+			}
+		});
+		pttClusters = new L.MarkerClusterGroup({
+		  spiderfyOnMaxZoom: true,
+		  showCoverageOnHover: false,
+		  zoomToBoundsOnClick: true,
+		  disableClusteringAtZoom: 16
+		});
+		$.getJSON("lm_ptt.php", function (data) {
+  		ptt.addData(data);
+			pttClusters.addLayer(ptt);
+		}).complete(function () {
+    	map.fitBounds(ptt.getBounds());
+		});
+
+		// landmark all
+		var lm_all_icon = L.icon({
+			iconUrl: 'point.png',
+			iconSize: [24, 28],
+			iconAnchor: [12, 28],
+			popupAnchor: [0, -25]
+		});
+		lm_all = new L.geoJson(null, {
+			pointToLayer: function (feature, latlng) {
+			  return L.marker(latlng, {
+			  icon: lm_all_icon,
+			    title: feature.properties.address
+			  });
+			},
+			onEachFeature: function (feature, layer) {
+			  if (feature.properties) {
+			    var content = '<table border="1" style="border-collapse:collapse;" cellpadding="2">' +
+		        '<tr>' + '<th>ลำดับ</th>' + '<td>' + feature.properties.id + '</td>' + '</tr>' +
+				'<tr>' + '<th>เวลา</th>' + '<td>' + feature.properties.timestamp + '</td>' + '</tr>' +
+				'<tr>' + '<th>ชื่อ</th>' + '<td>' + feature.properties.name + '</td>' + '</tr>' +
+		        '<tr>' + '<th>ชนิด</th>' + '<td>' + feature.properties.type + '</td>' + '</tr>' +
+		        '<tr>' + '<th>จังหวัด</th>' + '<td>' + feature.properties.prov_namt + '</td>' + '</tr>' +
+		     
+		        '<table>';
+			    layer.bindPopup(content);
+			  }
+			}
+		});
+		lmClusters = new L.MarkerClusterGroup({
+		  spiderfyOnMaxZoom: true,
+		  showCoverageOnHover: true,
+		  zoomToBoundsOnClick: true,
+		  disableClusteringAtZoom: 18
+		});
+		$.getJSON("lm_all.php", function (data) {
+			lm_all.addData(data);
+			lmClusters.addLayer(lm_all);
+		}).complete(function () {
+    	map.fitBounds(lm_all.getBounds());
+		});
+
+
+		map = new L.Map("map",{ layers: [OSM] });
+
+		var baseLayers = {
+			"OpenStreetMap": OSM
+		};
+		var overlays = {
+			"Landmark Phitsanulok": lm_all,
+			"Landmark Phitsanulok (จัดกลุ่ม)": lmClusters,
+			"7-Eleven": seven,
+			"7-Eleven (จัดกลุ่ม)": sevenClusters,
+			"วัด": temple,
+			"วัด (จัดกลุ่ม)": templeClusters,
+			"PTT": ptt,
+			"PTT (จัดกลุ่ม)": pttClusters
+		};
+
+		layersControl = new L.Control.Layers(baseLayers, overlays, {
+			collapsed: false
+		});
+		map.addControl(layersControl);
+	</script>
+</body>
+</html>
